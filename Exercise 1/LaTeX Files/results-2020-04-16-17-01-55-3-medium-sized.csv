@@ -1,0 +1,16 @@
+file;time;vertices;edges;solsize;recsteps;finished;verified
+3-medium-sized/vc001.dimacs;0.31;6160;40207;2586;0;1;correct;0;;
+3-medium-sized/vc003.dimacs;1.34;60541;48418;12190;0;1;correct;0;;
+3-medium-sized/vc005.dimacs;17.81;200;798;129;28120;1;correct;0;;
+3-medium-sized/vc007.dimacs;0.19;8794;10121;4397;0;1;correct;0;;
+3-medium-sized/vc009.dimacs;1.25;38452;174645;21348;0;1;correct;0;;
+3-medium-sized/vc011.dimacs;0.26;9875;25973;4981;0;1;correct;0;;
+3-medium-sized/vc013.dimacs;0.67;45307;36697;8610;0;1;correct;0;;
+3-medium-sized/vc015.dimacs;0.77;53610;42940;10670;0;1;correct;0;;
+3-medium-sized/vc017.dimacs;0.53;23541;34233;12082;0;1;correct;0;;
+3-medium-sized/vc021.dimacs;0.32;24765;19655;5110;0;1;correct;0;;
+3-medium-sized/vc023.dimacs;1.00;27717;133665;16013;0;1;correct;0;;
+3-medium-sized/vc025.dimacs;0.36;23194;18295;4899;0;1;correct;0;;
+3-medium-sized/vc027.dimacs;0.99;65866;52435;13431;0;1;correct;0;;
+3-medium-sized/vc029.dimacs;0.28;13431;16234;6622;0;1;correct;0;;
+3-medium-sized/vc033.dimacs;3.70;4410;6885;2725;1479;1;correct;0;;
