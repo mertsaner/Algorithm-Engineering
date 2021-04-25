@@ -3,6 +3,7 @@
 #include <vector>
 #include <tuple>
 #include <math.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -61,27 +62,28 @@ int main(int argc, char **argv) {
 	//for (int i = 0; i < target_vector.size(); i++) {
 	//	cout << target_vector.at(i).at(0) << "-" << target_vector.at(i).at(1) << endl;
 	//}
-	/*tuple<vector<vector<int>>, bool> result;
+	tuple<vector<vector<int>>, bool> result;
 	int k = 0;
 	while (true) {
+		cout << "test with k= " << k << endl;
 		result = recursive_approach(adjacent_matrix, k);
 		if (get<1>(result) == true) {
 			break;
 		}
 		k += 1;
-	}*/
+	}
 
-	/*cout << "result k: " << k << endl;
+	cout << "result k: " << k << endl;
 	vector<vector<int>> v = get<0>(result);
 	for (unsigned int i = 0; i < v.size(); i++) {
 		for (unsigned int j = 0; j < v.at(i).size(); j++) {
-			cout << v.at(i).at(j);
+			cout << v.at(i).at(j) +1 << " ";
 		}
 		cout << endl;
-	}*/
+	}
 
 	cout << "--------------" << endl;
-	int cost = 100000;
+	/*int cost = 100000;
 	unsigned int best_combination = 0;
 	unsigned int snd_combination = 0;
 	int snd_cost = 10000;
@@ -108,18 +110,18 @@ int main(int argc, char **argv) {
 
 	}
 	
-	/*for (int x = 0; x < vertex_count; x++) {
+	for (int x = 0; x < vertex_count; x++) {
 		for (int y = 0; y < vertex_count; y++) {
 			cout << adjacent_matrix_2.at(x).at(y) << " ";
 		}
 		cout << endl;
-	}*/
+	}
 	
 	cout << "minimal cost: " << cost << endl;
 	cout << "2nd cost: " << snd_cost << endl;
 	cout << "best combination: " << best_combination << endl;
 	cout << "2nd combination: " << snd_combination << endl;
-	cout << "clusters detected: " << cluster_counter << endl;
+	cout << "clusters detected: " << cluster_counter << endl;*/
 	return 0;
 }
 
@@ -230,10 +232,10 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	}
 	vector<vector<int>> set_S;
 	// find P3 in adjacent matrix
-	cout << "before find_p3_not_clique" << endl;
+	
 	vector<unsigned int> sub_graph_indices = find_p3_not_clique(adjacent_matrix);
 	// change one edge
-	cout << "after find_p3_not_clique" << endl;
+	
 	vector<vector<int>> sub_graph_adjacent_matrix_1 = adjacent_matrix;
 	sub_graph_adjacent_matrix_1.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) = sub_graph_adjacent_matrix_1.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) * -1; 
 	tuple<vector<vector<int>>, bool> subresult_1 = recursive_approach(sub_graph_adjacent_matrix_1, k - abs(adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1))));
@@ -244,7 +246,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		return result;
 	}
 
-	cout << "after first change" << endl;
+	
 	// or change other edge
 	vector<vector<int>> sub_graph_adjacent_matrix_2 = adjacent_matrix;
 	sub_graph_adjacent_matrix_2.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) = sub_graph_adjacent_matrix_2.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) * -1; 
@@ -255,7 +257,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
 	}
-	cout << "after snd change" << endl;
+	
 	// or change thrid edge
 	vector<vector<int>> sub_graph_adjacent_matrix_3 = adjacent_matrix;
 	sub_graph_adjacent_matrix_3.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) = sub_graph_adjacent_matrix_3.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) * -1; 
@@ -266,7 +268,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
 	}
-	cout << "after trd change" << endl;
+	
 	vector<vector<int>> subresult;
 	tuple<vector<vector<int>>,bool> result(subresult, false);
 	return result;
@@ -278,13 +280,15 @@ vector<unsigned int> find_p3_not_clique(vector<vector<int>> adjacent_matrix) {
 		for (unsigned int j = 0; j < adjacent_matrix.size(); j++) {
 			for (unsigned int k = 0; k < adjacent_matrix.size(); k++) {
 				if (i != k && j != k && i != j) {
-					cout << "before connected check" << endl;
+					
 					if (is_connected(adjacent_matrix, i, j) && is_connected(adjacent_matrix, j, k)) {
 						if (is_connected(adjacent_matrix, i, k) == false) {
-							return {i,j,k};
+							
+							vector<unsigned int> result = {i,j,k};
+							sort(result.begin(), result.end());
+							return result;
 						}
 					}
-					cout << "after connected check" << endl;
 				}
 			}
 		}
@@ -293,7 +297,7 @@ vector<unsigned int> find_p3_not_clique(vector<vector<int>> adjacent_matrix) {
 }
 
 bool is_connected(vector<vector<int>> adjacent_matrix, int index_1, int index_2) {
-	cout << index_1 << " - " << index_2 << endl;
+	
 	if (index_1 > index_2) {
 		if (adjacent_matrix.at(index_2).at(index_1) > 0) {
 			return true;
