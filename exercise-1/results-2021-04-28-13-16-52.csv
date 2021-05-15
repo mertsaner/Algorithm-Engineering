@@ -1,0 +1,10 @@
+file;vertices;edges;time;solsize;recsteps;finished;verified
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w001.dimacs;4;3;0.00;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w003.dimacs;6;8;0.02;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w005.dimacs;16;118;0.15;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w007.dimacs;16;107;0.03;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w009.dimacs;13;77;0.04;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w011.dimacs;14;88;0.25;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w013.dimacs;15;48;0.96;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w015.dimacs;10;14;0.02;;;1;verifier.py: ; bad entry in solution, line 1
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w017.dimacs;14;60;0.10;;;1;verifier.py: ; bad entry in solution, line 1
