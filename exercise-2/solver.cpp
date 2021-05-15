@@ -28,7 +28,7 @@ tuple<vector<vector<int>>,int> naive_aproach_main(vector<vector<int>> adjacent_m
 vector<vector<int>> translate_indices(vector<vector<int>> v);
 
 
-tuple<vector<vector<int>>,vector<int>,int> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k);
+tuple<vector<vector<int>>,vector<int>,int,vector<vector<int>>> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k);
 vector<vector<int>> unmerge_vertices(vector<vector<int>> original_matrix, vector<vector<int>> merged_matrix, vector<int> merged_vertices, vector<vector<int>> removed_vertices);
 
 int main(int argc, char **argv) {
@@ -96,7 +96,7 @@ tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjace
 	tuple<vector<vector<int>>, bool> result;
 
 	// implement pre-branching reduction rule here
-	int k = 62;
+	int k = 7;
 	//int l = 0;
 	while (true) {
 		cout << "test with k= " << k << endl;
@@ -428,12 +428,21 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		return result;
 	}
 
+	vector<vector<int>> set_S;
 	// merging ------------------------------------------
 	vector<vector<int>> saved_adjacent_matrix = adjacent_matrix;
-	tuple<vector<vector<int>>,vector<int>,int> merging = merge_vertices(adjacent_matrix, k);
+	//tuple<vector<vector<int>>,vector<int>,int> merging = merge_vertices(adjacent_matrix, k);
+	tuple<vector<vector<int>>,vector<int>,int, vector<vector<int>>> merging = merge_vertices(adjacent_matrix, k);
+	
 	vector<vector<int>> merged_adjacent_matrix = get<0>(merging);
 	vector<int> merged_vertices = get<1>(merging);
+	vector<vector<int>> implicit_changes = get<3>(merging);
+	for (unsigned int i = 0; i < implicit_changes.size(); i++) {
+		set_S.push_back(implicit_changes.at(i));
+	}
+
 	cout << "merged: " << merged_vertices.at(0) << " and " << merged_vertices.at(1) << endl;
+	print_2D_vector(merged_adjacent_matrix);
 	int reduce_k = get<2>(merging);
 	if (k >= reduce_k) {
 		adjacent_matrix = merged_adjacent_matrix;
@@ -456,12 +465,12 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	//if (is_cluster(adjacent_matrix)) {
 	if (get<0>(cluster_detection)) {
 		vector<vector<int>> subresult = get<1>(cluster_detection);
+		cout << "cluster detected" << endl;
 		vector<vector<int>> unmerged_subresult = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, subresult);
 		tuple<vector<vector<int>>, bool> result(unmerged_subresult, true);
 		//tuple<vector<vector<int>>, bool> result(subresult, true);
 		return result;
 	}
-	vector<vector<int>> set_S;
 
 	
 
@@ -473,7 +482,10 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	sub_graph_adjacent_matrix_1.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) = sub_graph_adjacent_matrix_1.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) * -1; 
 	tuple<vector<vector<int>>, bool> subresult_1 = recursive_approach(sub_graph_adjacent_matrix_1, k - abs(adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1))));
 	if (get<1>(subresult_1) != false) {
-		set_S = get<0>(subresult_1);
+		//set_S = get<0>(subresult_1);
+		for (unsigned int i = 0; i < get<0>(subresult_1).size(); i++) {
+			set_S.push_back(get<0>(subresult_1).at(i));
+		}
 		// revert merging
 		int append = 1;
 		if (adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) > 0) {
@@ -488,7 +500,9 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		//}
 
 		set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(1), append});
+		print_2D_vector(set_S);
 		// unmerge with set_S
+		cout << "recursive return" << endl;
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
@@ -501,8 +515,11 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	sub_graph_adjacent_matrix_2.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) = sub_graph_adjacent_matrix_2.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) * -1; 
 	tuple<vector<vector<int>>, bool> subresult_2 = recursive_approach(sub_graph_adjacent_matrix_2, k - abs(adjacent_matrix.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2))));
 	if (get<1>(subresult_2) != false) {
-		set_S = get<0>(subresult_2);
+		//set_S = get<0>(subresult_2);
 		// revert merging
+		for (unsigned int i = 0; i < get<0>(subresult_2).size(); i++) {
+			set_S.push_back(get<0>(subresult_2).at(i));
+		}
 		int append = 1;
 		if (adjacent_matrix.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) > 0) {
 			append = 0;
@@ -515,7 +532,9 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		//}
 
 		set_S.push_back({(int) sub_graph_indices.at(1), (int) sub_graph_indices.at(2), append});
+		print_2D_vector(set_S);
 		// unmerge with set_S
+		cout << "recursive return" << endl;
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
@@ -527,7 +546,10 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	sub_graph_adjacent_matrix_3.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) = sub_graph_adjacent_matrix_3.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) * -1; 
 	tuple<vector<vector<int>>, bool> subresult_3 = recursive_approach(sub_graph_adjacent_matrix_3, k - abs(adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2))));
 	if (get<1>(subresult_3) != false) {
-		set_S = get<0>(subresult_3);
+		//set_S = get<0>(subresult_3);
+		for (unsigned int i = 0; i < get<0>(subresult_3).size(); i++) {
+			set_S.push_back(get<0>(subresult_3).at(i));
+		}
 		// revert merging
 		int append = 1;
 		if (adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) > 0) {
@@ -541,7 +563,8 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		//	set_S.push_back(unmerged_app_set.at(i));
 		//}
 		set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(2), append});
-		
+		print_2D_vector(set_S);
+		cout << "recursive return" << endl;
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
@@ -553,7 +576,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	return result;
 }
 
-tuple<vector<vector<int>>, vector<int>, int> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k) {
+tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k) {
 	bool found = false;
 	unsigned int row = 0;
 	unsigned int col = 0;
@@ -562,9 +585,13 @@ tuple<vector<vector<int>>, vector<int>, int> merge_vertices(vector<vector<int>> 
 			if (adjacent_matrix.at(i).at(j) > gt_k) {
 				row = i;
 				col = j;
+				cout << "merge_vertices " << row << " " << col << endl;
 				found = true;
 				break;
 			}
+		}
+		if (found) {
+			break;
 		}
 	}
 	int reduce_k = 0;
@@ -595,6 +622,8 @@ tuple<vector<vector<int>>, vector<int>, int> merge_vertices(vector<vector<int>> 
 			new_adjacent_matrix.push_back(new_row);
 		}
 
+		vector<vector<int>> removed_vertices;
+
 		for (unsigned int i = 0; i < adjacent_matrix.size(); i++) {
 			if (i == row || i == col) {
 				continue;
@@ -604,6 +633,14 @@ tuple<vector<vector<int>>, vector<int>, int> merge_vertices(vector<vector<int>> 
 				if ((adjacent_matrix.at(i).at(row) > 0 && adjacent_matrix.at(i).at(col) < 0) ||
 					(adjacent_matrix.at(i).at(row) < 0 && adjacent_matrix.at(i).at(col) > 0)) {
 					reduce_k += min(abs(adjacent_matrix.at(i).at(row)), abs(adjacent_matrix.at(i).at(col)));
+					// save min edge vertices
+					if (abs(adjacent_matrix.at(i).at(row)) < abs(adjacent_matrix.at(i).at(col))) {
+						removed_vertices.push_back({(int) i, (int) row, 1});
+					}
+					else {
+						removed_vertices.push_back({(int) i, (int) col, 1});
+					}
+
 				}
 				new_adjacent_matrix.at(i).at(row) = adjacent_matrix.at(i).at(row) + adjacent_matrix.at(i).at(col);
 			}
@@ -613,6 +650,13 @@ tuple<vector<vector<int>>, vector<int>, int> merge_vertices(vector<vector<int>> 
 					if ((adjacent_matrix.at(row).at(i) > 0 && adjacent_matrix.at(i).at(col) < 0) ||
 						(adjacent_matrix.at(row).at(i) < 0 && adjacent_matrix.at(i).at(col) > 0)) {
 						reduce_k += min(abs(adjacent_matrix.at(row).at(i)), abs(adjacent_matrix.at(i).at(col)));
+						// save min edge vertices
+						if (abs(adjacent_matrix.at(row).at(i)) < abs(adjacent_matrix.at(i).at(col))) {
+							removed_vertices.push_back({(int) row, (int) i, 1});
+						}
+						else {
+							removed_vertices.push_back({(int) i, (int) col, 1});
+						}
 					}	
 					new_adjacent_matrix.at(row).at(i) = adjacent_matrix.at(row).at(i) + adjacent_matrix.at(i).at(col);
 				}
@@ -621,16 +665,26 @@ tuple<vector<vector<int>>, vector<int>, int> merge_vertices(vector<vector<int>> 
 					if ((adjacent_matrix.at(row).at(i) > 0 && adjacent_matrix.at(col).at(i) < 0) ||
 						(adjacent_matrix.at(row).at(i) < 0 && adjacent_matrix.at(col).at(i) > 0)) {
 						reduce_k += min(abs(adjacent_matrix.at(row).at(i)), abs(adjacent_matrix.at(col).at(i)));
+						// save min edge vertices
+						if (abs(adjacent_matrix.at(row).at(i)) < abs(adjacent_matrix.at(col).at(i))) {
+							removed_vertices.push_back({(int) row, (int) i, 1});
+						}
+						else {
+							removed_vertices.push_back({(int) col, (int) i, 1});
+						}
 					}
 					new_adjacent_matrix.at(row).at(i - 1) = adjacent_matrix.at(row).at(i) + adjacent_matrix.at(col).at(i);
 				}
 			}
 		}
-		
-		tuple< vector<vector<int>>,vector<int>,int> result(new_adjacent_matrix, merged_vertices, reduce_k);
+		cout << "merge removed" << endl;
+		print_2D_vector(removed_vertices);
+		cout << "/merge removed" << endl;
+		tuple< vector<vector<int>>,vector<int>,int, vector<vector<int>>> result(new_adjacent_matrix, merged_vertices, reduce_k, removed_vertices);
 		return result;
 	}
-	tuple< vector<vector<int>>,vector<int>,int> result(adjacent_matrix, merged_vertices, 0);
+	vector<vector<int>> default_vec;
+	tuple< vector<vector<int>>,vector<int>,int, vector<vector<int>>> result(adjacent_matrix, merged_vertices, 0, default_vec);
 	return result;
 }
 
@@ -646,10 +700,10 @@ vector<vector<int>> unmerge_vertices(vector<vector<int>> original_matrix, vector
 	if (merged_vertices.size() <= 0) {
 		return removed_vertices;
 	}
-	cout << "#############" << endl;
+	cout << "##### unmerge ########" << endl;
 	cout << merged_vertices.at(0) << ", " << merged_vertices.at(1) << endl;
 	print_2D_vector(removed_vertices);
-	cout << "#############" << endl;
+	cout << "###### /unmerge #######" << endl;
 	for (unsigned int i = 0; i < original_matrix.size(); i++) {
 		for (unsigned int j = i; j < original_matrix.at(i).size(); j++) {
 			original_matrix.at(j).at(i) = original_matrix.at(i).at(j);
