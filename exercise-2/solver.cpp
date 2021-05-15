@@ -96,7 +96,7 @@ tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjace
 	tuple<vector<vector<int>>, bool> result;
 
 	// implement pre-branching reduction rule here
-	int k = 7;
+	int k = 3;
 	//int l = 0;
 	while (true) {
 		cout << "test with k= " << k << endl;
@@ -437,9 +437,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	vector<vector<int>> merged_adjacent_matrix = get<0>(merging);
 	vector<int> merged_vertices = get<1>(merging);
 	vector<vector<int>> implicit_changes = get<3>(merging);
-	for (unsigned int i = 0; i < implicit_changes.size(); i++) {
-		set_S.push_back(implicit_changes.at(i));
-	}
+	
 
 	cout << "merged: " << merged_vertices.at(0) << " and " << merged_vertices.at(1) << endl;
 	print_2D_vector(merged_adjacent_matrix);
@@ -466,7 +464,12 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	if (get<0>(cluster_detection)) {
 		vector<vector<int>> subresult = get<1>(cluster_detection);
 		cout << "cluster detected" << endl;
+		
 		vector<vector<int>> unmerged_subresult = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, subresult);
+		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
+			unmerged_subresult.push_back(implicit_changes.at(i));
+		}
+
 		tuple<vector<vector<int>>, bool> result(unmerged_subresult, true);
 		//tuple<vector<vector<int>>, bool> result(subresult, true);
 		return result;
@@ -634,11 +637,14 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 					(adjacent_matrix.at(i).at(row) < 0 && adjacent_matrix.at(i).at(col) > 0)) {
 					reduce_k += min(abs(adjacent_matrix.at(i).at(row)), abs(adjacent_matrix.at(i).at(col)));
 					// save min edge vertices
-					if (abs(adjacent_matrix.at(i).at(row)) < abs(adjacent_matrix.at(i).at(col))) {
-						removed_vertices.push_back({(int) i, (int) row, 1});
-					}
-					else {
-						removed_vertices.push_back({(int) i, (int) col, 1});
+					if ((adjacent_matrix.at(i).at(row) + adjacent_matrix.at(i).at(col)) != 0) {
+						cout << "merge_vertices: add sth" << endl;
+						if (abs(adjacent_matrix.at(i).at(row)) < abs(adjacent_matrix.at(i).at(col))) {
+							removed_vertices.push_back({(int) i, (int) row, 1});
+						}
+						else {
+							removed_vertices.push_back({(int) i, (int) col, 1});
+						}
 					}
 
 				}
@@ -651,12 +657,17 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 						(adjacent_matrix.at(row).at(i) < 0 && adjacent_matrix.at(i).at(col) > 0)) {
 						reduce_k += min(abs(adjacent_matrix.at(row).at(i)), abs(adjacent_matrix.at(i).at(col)));
 						// save min edge vertices
-						if (abs(adjacent_matrix.at(row).at(i)) < abs(adjacent_matrix.at(i).at(col))) {
-							removed_vertices.push_back({(int) row, (int) i, 1});
+						if ((adjacent_matrix.at(row).at(i) + adjacent_matrix.at(i).at(col)) != 0) {
+							cout << "merge_vertices: add sth" << endl;
+							if (abs(adjacent_matrix.at(row).at(i)) < abs(adjacent_matrix.at(i).at(col))) {
+								removed_vertices.push_back({(int) row, (int) i, 1});
+							}
+							else {
+								removed_vertices.push_back({(int) i, (int) col, 1});
+							}
 						}
-						else {
-							removed_vertices.push_back({(int) i, (int) col, 1});
-						}
+
+
 					}	
 					new_adjacent_matrix.at(row).at(i) = adjacent_matrix.at(row).at(i) + adjacent_matrix.at(i).at(col);
 				}
@@ -666,11 +677,14 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 						(adjacent_matrix.at(row).at(i) < 0 && adjacent_matrix.at(col).at(i) > 0)) {
 						reduce_k += min(abs(adjacent_matrix.at(row).at(i)), abs(adjacent_matrix.at(col).at(i)));
 						// save min edge vertices
-						if (abs(adjacent_matrix.at(row).at(i)) < abs(adjacent_matrix.at(col).at(i))) {
-							removed_vertices.push_back({(int) row, (int) i, 1});
-						}
-						else {
-							removed_vertices.push_back({(int) col, (int) i, 1});
+						if ((adjacent_matrix.at(row).at(i) + adjacent_matrix.at(col).at(i)) != 0) {
+							cout << "merge_vertices: add sth" << endl;
+							if (abs(adjacent_matrix.at(row).at(i)) < abs(adjacent_matrix.at(col).at(i))) {
+								removed_vertices.push_back({(int) row, (int) i, 1});
+							}
+							else {
+									removed_vertices.push_back({(int) col, (int) i, 1});
+							}
 						}
 					}
 					new_adjacent_matrix.at(row).at(i - 1) = adjacent_matrix.at(row).at(i) + adjacent_matrix.at(col).at(i);
