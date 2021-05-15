@@ -55,6 +55,12 @@ int main(int argc, char **argv) {
 	cout << adjacent_lines.size() << endl;
 	cout << "Building Adjacent-Matrix" << endl;
 	vector<vector<int>> adjacent_matrix = build_adjacent_matrix(vertex_count, adjacent_lines);
+	for (unsigned int i = 0; i < adjacent_matrix.size(); i++) {
+		for (unsigned int j = i; j < adjacent_matrix.at(i).size(); j++) {
+			adjacent_matrix.at(j).at(i) = adjacent_matrix.at(i).at(j);
+		}
+	}
+
 	for (int x = 0; x < vertex_count; x++) {
 		for (int y = 0; y < vertex_count; y++) {
 			cout << adjacent_matrix.at(x).at(y) << " ";
@@ -87,17 +93,10 @@ int main(int argc, char **argv) {
 
 tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjacent_matrix) {
 	vector<int> edge_weights;
-	for (unsigned int i = 0; i < adjacent_matrix.size(); i++) {
-		for (unsigned int j = i + 1; j < adjacent_matrix.at(i).size(); j++) {
-			edge_weights.push_back(abs(adjacent_matrix.at(i).at(j)));
-		}
-	}
-	sort(edge_weights.begin(), edge_weights.end());
-
 	tuple<vector<vector<int>>, bool> result;
 
 	// implement pre-branching reduction rule here
-	int k = 0;
+	int k = 62;
 	//int l = 0;
 	while (true) {
 		cout << "test with k= " << k << endl;
@@ -434,6 +433,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	tuple<vector<vector<int>>,vector<int>,int> merging = merge_vertices(adjacent_matrix, k);
 	vector<vector<int>> merged_adjacent_matrix = get<0>(merging);
 	vector<int> merged_vertices = get<1>(merging);
+	cout << "merged: " << merged_vertices.at(0) << " and " << merged_vertices.at(1) << endl;
 	int reduce_k = get<2>(merging);
 	if (k >= reduce_k) {
 		adjacent_matrix = merged_adjacent_matrix;
@@ -444,20 +444,21 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		tuple<vector<vector<int>>, bool> result(subresult, false);
 		return result;
 	}
+
+
 	// find nodes to merge
 	// generate new adjacent matrix
 	// save merging --------------------------------------
 
 	//cout << "before cluster detection" << endl;
-	tuple<bool, vector<vector<int>>> cluster_detection = is_cluster(adjacent_matrix);
+	tuple<bool, vector<vector<int>>> cluster_detection = is_cluster_init_new(adjacent_matrix);
 	//cout << "after cluster detection" << endl;
 	//if (is_cluster(adjacent_matrix)) {
 	if (get<0>(cluster_detection)) {
 		vector<vector<int>> subresult = get<1>(cluster_detection);
-		cout << "before unmerge" << endl;
 		vector<vector<int>> unmerged_subresult = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, subresult);
-		cout << "before after" << endl;
 		tuple<vector<vector<int>>, bool> result(unmerged_subresult, true);
+		//tuple<vector<vector<int>>, bool> result(subresult, true);
 		return result;
 	}
 	vector<vector<int>> set_S;
@@ -478,8 +479,19 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		if (adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) > 0) {
 			append = 0;
 		}
+
+		//vector<vector<int>> appending_set = {{(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(1), append}};
+		//vector<vector<int>> unmerged_app_set = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, appending_set);
+
+		//for (unsigned int i = 0; i < unmerged_app_set.size(); i++) {
+		//	set_S.push_back(unmerged_app_set.at(i));
+		//}
+
 		set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(1), append});
-		tuple<vector<vector<int>>,bool> result(set_S, true);
+		// unmerge with set_S
+		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
+		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
+		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
 	}
 
@@ -495,8 +507,18 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		if (adjacent_matrix.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) > 0) {
 			append = 0;
 		}
+		//vector<vector<int>> appending_set = {{(int) sub_graph_indices.at(1), (int) sub_graph_indices.at(2), append}};
+		//vector<vector<int>> unmerged_app_set = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, appending_set);
+
+		//for (unsigned int i = 0; i < unmerged_app_set.size(); i++) {
+		//	set_S.push_back(unmerged_app_set.at(i));
+		//}
+
 		set_S.push_back({(int) sub_graph_indices.at(1), (int) sub_graph_indices.at(2), append});
-		tuple<vector<vector<int>>,bool> result(set_S, true);
+		// unmerge with set_S
+		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
+		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
+		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
 	}
 	
@@ -511,8 +533,18 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		if (adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) > 0) {
 			append = 0;
 		}
+
+		//vector<vector<int>> appending_set = {{(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(2), append}};
+		//vector<vector<int>> unmerged_app_set = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, appending_set);
+
+		//for (unsigned int i = 0; i < unmerged_app_set.size(); i++) {
+		//	set_S.push_back(unmerged_app_set.at(i));
+		//}
 		set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(2), append});
-		tuple<vector<vector<int>>,bool> result(set_S, true);
+		
+		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
+		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
+		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
 	}
 	
@@ -614,6 +646,10 @@ vector<vector<int>> unmerge_vertices(vector<vector<int>> original_matrix, vector
 	if (merged_vertices.size() <= 0) {
 		return removed_vertices;
 	}
+	cout << "#############" << endl;
+	cout << merged_vertices.at(0) << ", " << merged_vertices.at(1) << endl;
+	print_2D_vector(removed_vertices);
+	cout << "#############" << endl;
 	for (unsigned int i = 0; i < original_matrix.size(); i++) {
 		for (unsigned int j = i; j < original_matrix.at(i).size(); j++) {
 			original_matrix.at(j).at(i) = original_matrix.at(i).at(j);
