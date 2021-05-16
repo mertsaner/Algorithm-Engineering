@@ -28,7 +28,7 @@ tuple<vector<vector<int>>,int> naive_aproach_main(vector<vector<int>> adjacent_m
 vector<vector<int>> translate_indices(vector<vector<int>> v);
 
 bool equal_sign(int a, int);
-tuple<vector<vector<int>>,vector<int>,int,vector<vector<int>>> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k);
+tuple<vector<vector<int>>,vector<int>,int,vector< tuple<vector<int>, vector<int>> >> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k);
 vector<vector<int>> unmerge_vertices(vector<vector<int>> original_matrix, vector<vector<int>> merged_matrix, vector<int> merged_vertices, vector<vector<int>> removed_vertices);
 
 int main(int argc, char **argv) {
@@ -455,11 +455,11 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	// merging ------------------------------------------
 	vector<vector<int>> saved_adjacent_matrix = adjacent_matrix;
 	//tuple<vector<vector<int>>,vector<int>,int> merging = merge_vertices(adjacent_matrix, k);
-	tuple<vector<vector<int>>,vector<int>,int, vector<vector<int>>> merging = merge_vertices(adjacent_matrix, k);
+	tuple<vector<vector<int>>,vector<int>,int, vector<tuple <vector<int>,vector<int>> >> merging = merge_vertices(adjacent_matrix, k);
 	
 	vector<vector<int>> merged_adjacent_matrix = get<0>(merging);
 	vector<int> merged_vertices = get<1>(merging);
-	vector<vector<int>> implicit_changes = get<3>(merging);
+	vector<tuple<vector<int>,vector<int>>> implicit_changes = get<3>(merging);
 
 	//cout << "merged: " << merged_vertices.at(0) << " and " << merged_vertices.at(1) << endl;
 	print_2D_vector(merged_adjacent_matrix);
@@ -537,7 +537,19 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		print_2D_vector(set_S);
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
 		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
-			set_S_unmerged.push_back(implicit_changes.at(i));
+			bool found = false;
+			for (unsigned int j = 0; j < set_S_unmerged.size(); j++) {
+				if (get<1>(implicit_changes.at(i)).at(0) == set_S_unmerged.at(j).at(0) &&
+					get<1>(implicit_changes.at(i)).at(1) == set_S_unmerged.at(j).at(1)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				set_S_unmerged.push_back(get<0>(implicit_changes.at(i)));
+			}
+
+			//set_S_unmerged.push_back(implicit_changes.at(i));
 		}
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
@@ -584,10 +596,24 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		// unmerge with set_S
 		cout << "recursive return" << endl;
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
+		////for (unsigned int i = 0; i < implicit_changes.size(); i++) {
+		////	set_S_unmerged.push_back(implicit_changes.at(i));
+		////}
 		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
-			set_S_unmerged.push_back(implicit_changes.at(i));
-		}
+			bool found = false;
+			for (unsigned int j = 0; j < set_S_unmerged.size(); j++) {
+				if (get<1>(implicit_changes.at(i)).at(0) == set_S_unmerged.at(j).at(0) &&
+					get<1>(implicit_changes.at(i)).at(1) == set_S_unmerged.at(j).at(1)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				set_S_unmerged.push_back(get<0>(implicit_changes.at(i)));
+			}
 
+			//set_S_unmerged.push_back(implicit_changes.at(i));
+		}
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
@@ -630,8 +656,23 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		print_2D_vector(set_S);
 		cout << "recursive return" << endl;
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
+		//for (unsigned int i = 0; i < implicit_changes.size(); i++) {
+		//	set_S_unmerged.push_back(implicit_changes.at(i));
+		//}
 		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
-			set_S_unmerged.push_back(implicit_changes.at(i));
+			bool found = false;
+			for (unsigned int j = 0; j < set_S_unmerged.size(); j++) {
+				if (get<1>(implicit_changes.at(i)).at(0) == set_S_unmerged.at(j).at(0) &&
+					get<1>(implicit_changes.at(i)).at(1) == set_S_unmerged.at(j).at(1)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				set_S_unmerged.push_back(get<0>(implicit_changes.at(i)));
+			}
+
+			//set_S_unmerged.push_back(implicit_changes.at(i));
 		}
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
@@ -643,7 +684,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 	return result;
 }
 
-tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k) {
+tuple<vector<vector<int>>, vector<int>, int, vector< tuple<vector<int>,vector<int>> >> merge_vertices(vector<vector<int>> adjacent_matrix, int gt_k) {
 	bool found = false;
 	unsigned int row = 0;
 	unsigned int col = 0;
@@ -689,7 +730,7 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 			new_adjacent_matrix.push_back(new_row);
 		}
 
-		vector<vector<int>> removed_vertices;
+		vector<tuple< vector<int>,vector<int> >> removed_vertices;
 
 		for (unsigned int i = 0; i < adjacent_matrix.size(); i++) {
 			if (i == row || i == col) {
@@ -706,14 +747,22 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 						if (adjacent_matrix.at(i).at(row) > 0) {
 							append = 0;
 						}
-						removed_vertices.push_back({(int) i, (int) row, append});
+						vector<int> edge_1 = {(int) i, (int) row, append};
+						vector<int> edge_2 = {(int) i, (int) col, 1-append};
+						tuple<vector<int>,vector<int>> rmv_vert(edge_1, edge_2);
+						removed_vertices.push_back(rmv_vert);
+						//removed_vertices.push_back({(int) i, (int) row, append});
 					}
 					else {
 						int append = 1;
 						if (adjacent_matrix.at(i).at(col) > 0) {
 							append = 0;
 						}
-						removed_vertices.push_back({(int) i, (int) col, append});
+						vector<int> edge_1 = {(int) i, (int) col, append};
+						vector<int> edge_2 = {(int) i, (int) row, 1-append};
+						tuple<vector<int>,vector<int>> rmv_vert(edge_1, edge_2);
+						removed_vertices.push_back(rmv_vert);
+						//removed_vertices.push_back({(int) i, (int) col, append});
 					}
 					/*if ((adjacent_matrix.at(i).at(row) + adjacent_matrix.at(i).at(col)) != 0) {
 						cout << "merge_vertices: add sth" << endl;
@@ -744,14 +793,22 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 							if (adjacent_matrix.at(row).at(i) > 0) {
 								append = 0;
 							}
-							removed_vertices.push_back({(int) row, (int) i, append});
+							vector<int> edge_1 = {(int) row, (int) i, append};
+							vector<int> edge_2 = {(int) i, (int) col, 1-append};
+							tuple<vector<int>,vector<int>> rmv_vert(edge_1, edge_2);
+							removed_vertices.push_back(rmv_vert);
+							//removed_vertices.push_back({(int) row, (int) i, append});
 						}
 						else {
 							int append = 1;
 							if (adjacent_matrix.at(i).at(col) > 0) {
 								append = 0;
 							}
-							removed_vertices.push_back({(int) i, (int) col, append});
+							vector<int> edge_1 = {(int) i, (int) col, append};
+							vector<int> edge_2 = {(int) row, (int) i, 1-append};
+							tuple<vector<int>,vector<int>> rmv_vert(edge_1, edge_2);
+							removed_vertices.push_back(rmv_vert);
+							//removed_vertices.push_back({(int) i, (int) col, append});
 						}
 						/*if ((adjacent_matrix.at(row).at(i) + adjacent_matrix.at(i).at(col)) != 0) {
 							cout << "merge_vertices: add sth" << endl;
@@ -782,14 +839,23 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 							if (adjacent_matrix.at(row).at(i) > 0) {
 								append = 0;
 							}
-							removed_vertices.push_back({(int) row, (int) i, append});
+							
+							vector<int> edge_1 = {(int) row, (int) i, append};
+							vector<int> edge_2 = {(int) col, (int) i, 1-append};
+							tuple<vector<int>,vector<int>> rmv_vert(edge_1, edge_2);
+							removed_vertices.push_back(rmv_vert);
+							//removed_vertices.push_back({(int) row, (int) i, append});
 						}
 						else {
 							int append = 1;
 							if (adjacent_matrix.at(col).at(i) > 0) {
 								append = 0;
 							}
-							removed_vertices.push_back({(int) col, (int) i, append});
+							vector<int> edge_1 = {(int) col, (int) i, append};
+							vector<int> edge_2 = {(int) row, (int) i, 1-append};
+							tuple<vector<int>,vector<int>> rmv_vert(edge_1, edge_2);
+							removed_vertices.push_back(rmv_vert);
+							//removed_vertices.push_back({(int) col, (int) i, append});
 						}
 						/*if ((adjacent_matrix.at(row).at(i) + adjacent_matrix.at(col).at(i)) != 0) {
 							cout << "merge_vertices: add sth" << endl;
@@ -810,13 +876,13 @@ tuple<vector<vector<int>>, vector<int>, int, vector<vector<int>>> merge_vertices
 			}
 		}
 		cout << "merge removed" << endl;
-		print_2D_vector(removed_vertices);
+		//print_2D_vector(removed_vertices);
 		cout << "/merge removed" << endl;
-		tuple< vector<vector<int>>,vector<int>,int, vector<vector<int>>> result(new_adjacent_matrix, merged_vertices, reduce_k, removed_vertices);
+		tuple< vector<vector<int>>,vector<int>,int, vector< tuple<vector<int>,vector<int>> >> result(new_adjacent_matrix, merged_vertices, reduce_k, removed_vertices);
 		return result;
 	}
-	vector<vector<int>> default_vec;
-	tuple< vector<vector<int>>,vector<int>,int, vector<vector<int>>> result(adjacent_matrix, merged_vertices, 0, default_vec);
+	vector< tuple<vector<int>,vector<int>> > default_vec;
+	tuple< vector<vector<int>>,vector<int>,int, vector< tuple<vector<int>, vector<int>> >> result(adjacent_matrix, merged_vertices, 0, default_vec);
 	return result;
 }
 
@@ -865,10 +931,13 @@ vector<vector<int>> unmerge_vertices(vector<vector<int>> original_matrix, vector
 				if (merged_edge != 0) {
 					if (equal_sign(merged_edge, original_edge_1)) {
 						// append original edge 1
+						// search for edge 2 and remove it
+
 						result.push_back(unmerged_edge_1);
 					}
 					else {
 						// append original edge 2
+						// search for edge 1 and remove it
 						result.push_back(unmerged_edge_2);
 					}
 					continue;
