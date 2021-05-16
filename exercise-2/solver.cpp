@@ -96,7 +96,7 @@ tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjace
 	tuple<vector<vector<int>>, bool> result;
 
 	// implement pre-branching reduction rule here
-	int k = 3;
+	int k = 62;
 	//int l = 0;
 	while (true) {
 		cout << "test with k= " << k << endl;
@@ -522,7 +522,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 			if (adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(1)) > 0) {
 				append = 0;
 			}
-			set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(1), append});
+			//set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(1), append});
 		}
 
 		//vector<vector<int>> appending_set = {{(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(1), append}};
@@ -536,6 +536,9 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		cout << "recursive return" << endl;
 		print_2D_vector(set_S);
 		vector<vector<int>> set_S_unmerged = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, set_S);
+		cout << "set_S_unmerged before" << endl;
+		print_2D_vector(set_S_unmerged);
+		cout << "/set_S_unmerged brefore" << endl;
 		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
 			bool found = false;
 			for (unsigned int j = 0; j < set_S_unmerged.size(); j++) {
@@ -551,6 +554,9 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 
 			//set_S_unmerged.push_back(implicit_changes.at(i));
 		}
+		cout << "set_S_unmerged" << endl;
+		print_2D_vector(set_S_unmerged);
+		cout << "/set_S_unmerged" << endl;
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
@@ -583,7 +589,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 			if (adjacent_matrix.at(sub_graph_indices.at(1)).at(sub_graph_indices.at(2)) > 0) {
 				append = 0;
 			}
-			set_S.push_back({(int) sub_graph_indices.at(1), (int) sub_graph_indices.at(2), append});
+			//set_S.push_back({(int) sub_graph_indices.at(1), (int) sub_graph_indices.at(2), append});
 		}
 		//vector<vector<int>> appending_set = {{(int) sub_graph_indices.at(1), (int) sub_graph_indices.at(2), append}};
 		//vector<vector<int>> unmerged_app_set = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, appending_set);
@@ -599,12 +605,16 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		////for (unsigned int i = 0; i < implicit_changes.size(); i++) {
 		////	set_S_unmerged.push_back(implicit_changes.at(i));
 		////}
+		cout << "set_S_unmerged before" << endl;
+		print_2D_vector(set_S_unmerged);
+		cout << "/set_S_unmerged brefore" << endl;
 		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
 			bool found = false;
 			for (unsigned int j = 0; j < set_S_unmerged.size(); j++) {
 				if (get<1>(implicit_changes.at(i)).at(0) == set_S_unmerged.at(j).at(0) &&
 					get<1>(implicit_changes.at(i)).at(1) == set_S_unmerged.at(j).at(1)) {
 					found = true;
+					
 					break;
 				}
 			}
@@ -614,6 +624,9 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 
 			//set_S_unmerged.push_back(implicit_changes.at(i));
 		}
+		cout << "set_S_unmerged" << endl;
+		print_2D_vector(set_S_unmerged);
+		cout << "/set_S_unmerged" << endl;
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
@@ -645,7 +658,7 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 			if (adjacent_matrix.at(sub_graph_indices.at(0)).at(sub_graph_indices.at(2)) > 0) {
 				append = 0;
 			}
-			set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(2), append});
+			//set_S.push_back({(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(2), append});
 		}
 		//vector<vector<int>> appending_set = {{(int) sub_graph_indices.at(0), (int) sub_graph_indices.at(2), append}};
 		//vector<vector<int>> unmerged_app_set = unmerge_vertices(saved_adjacent_matrix, adjacent_matrix, merged_vertices, appending_set);
@@ -659,21 +672,27 @@ tuple<vector<vector<int>>, bool> recursive_approach(vector<vector<int>> adjacent
 		//for (unsigned int i = 0; i < implicit_changes.size(); i++) {
 		//	set_S_unmerged.push_back(implicit_changes.at(i));
 		//}
+		cout << "set_S_unmerged before" << endl;
+		print_2D_vector(set_S_unmerged);
+		cout << "/set_S_unmerged brefore" << endl;
 		for (unsigned int i = 0; i < implicit_changes.size(); i++) {
 			bool found = false;
 			for (unsigned int j = 0; j < set_S_unmerged.size(); j++) {
 				if (get<1>(implicit_changes.at(i)).at(0) == set_S_unmerged.at(j).at(0) &&
 					get<1>(implicit_changes.at(i)).at(1) == set_S_unmerged.at(j).at(1)) {
 					found = true;
+					
 					break;
 				}
 			}
 			if (!found) {
 				set_S_unmerged.push_back(get<0>(implicit_changes.at(i)));
 			}
-
 			//set_S_unmerged.push_back(implicit_changes.at(i));
 		}
+		cout << "set_S_unmerged" << endl;
+		print_2D_vector(set_S_unmerged);
+		cout << "/set_S_unmerged" << endl;
 		tuple<vector<vector<int>>,bool> result(set_S_unmerged, true);
 		//tuple<vector<vector<int>>,bool> result(set_S, true);
 		return result;
@@ -876,9 +895,11 @@ tuple<vector<vector<int>>, vector<int>, int, vector< tuple<vector<int>,vector<in
 			}
 		}
 		cout << "merge removed" << endl;
+		cout << removed_vertices.size() << endl;
 		//print_2D_vector(removed_vertices);
 		cout << "/merge removed" << endl;
-		tuple< vector<vector<int>>,vector<int>,int, vector< tuple<vector<int>,vector<int>> >> result(new_adjacent_matrix, merged_vertices, reduce_k, removed_vertices);
+		vector< tuple<vector<int>,vector<int>> > default_vec;
+		tuple< vector<vector<int>>,vector<int>,int, vector< tuple<vector<int>,vector<int>> >> result(new_adjacent_matrix, merged_vertices, reduce_k, default_vec);
 		return result;
 	}
 	vector< tuple<vector<int>,vector<int>> > default_vec;
