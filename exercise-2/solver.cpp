@@ -96,7 +96,7 @@ tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjace
 	tuple<vector<vector<int>>, bool> result;
 
 	// implement pre-branching reduction rule here
-	int k = 62;
+	int k = 0;
 	//int l = 0;
 	while (true) {
 		cout << "test with k= " << k << endl;
