@@ -5,13 +5,15 @@
 
 
 int main() {
+	
+	//Edge test_edge(1,2,5);
+	//cout << test_edge.to_string() << endl;
 	Graph g = parse_input();
-	cout << g.to_string() << endl;
+	cout << g.to_string(TRIPLE) << endl;
 	return 0;
 }
 
 Graph parse_input() {
-	Graph g;
 	string input_line;
 	int i = 1;
 	int vertex_count = 0;
@@ -31,10 +33,8 @@ Graph parse_input() {
 			adjacent_lines.push_back(parsed_line);
 		}
 	}
-	for (int i = 1; i <= vertex_count; i++) {
-		g.add_vertex(i);
-	}
-	return g;
+	Graph graph(vertex_count, adjacent_lines);
+	return graph;
 }
 
 
