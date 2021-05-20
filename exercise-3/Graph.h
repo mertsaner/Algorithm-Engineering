@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <string>
 #include "Edge.h"
 #include "Vertex.h"
 
@@ -10,7 +11,16 @@
 class Graph{
 	public:
 		Graph();
+		
 		Graph(int n,vector<vector<int>> list_of_edges);
+		
+		void add_vertex(int vertex_number);
+
+		void add_vertex(Vertex v);
+
+		string to_string();
+
+		int get_next_vertex_number();
 		vector<Vertex> vertices; 
 		vector<Edge> edges;
 
