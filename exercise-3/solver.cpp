@@ -4,12 +4,11 @@
 #include <vector>
 #include <iostream>
 
-class Vertex;
-class Graph;
-class Edge;
+
 
 int main() {
-	Vertex v;
+	Vertex v(10);
+	cout << v.vertex_number << endl;
 	Graph g;
 	Edge e;
 	return 0;

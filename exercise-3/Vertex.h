@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Vertex{
+class Vertex {
 	public:
 		Vertex();
 		Vertex(int vertex_number);

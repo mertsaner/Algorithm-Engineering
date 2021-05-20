@@ -4,7 +4,11 @@
 using namespace std;
 
 
+Vertex::Vertex() {
+	return;
+}
+
 Vertex::Vertex(int vertex_number) {
-	int a = 2;
+	this->vertex_number = vertex_number;
 	return;
 }
