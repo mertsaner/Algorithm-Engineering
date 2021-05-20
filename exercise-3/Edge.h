@@ -16,7 +16,7 @@ class Edge{
 		Edge();
 		Edge(Vertex* vertex_1, Vertex* vertex_2, int weight);
 		int weight;
-		bool set;
+		bool is_set;
 		bool forbidden;
 		Vertex* vertex_1;
 		Vertex* vertex_2;

@@ -27,6 +27,8 @@ class Graph{
 		vector<Vertex> vertices; 
 		vector<vector<Edge>> adjacent_matrix;
 
+		Graph clone();
+
 	private: 
 
 

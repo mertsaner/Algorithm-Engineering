@@ -15,6 +15,8 @@ Edge::Edge(Vertex* vertex_1, Vertex* vertex_2, int weight) {
 	this->vertex_1 = vertex_1;
 	this->vertex_2 = vertex_2;
 	this->weight = weight;
+	this->forbidden = false;
+	this->is_set=false;
 	return;
 }
 

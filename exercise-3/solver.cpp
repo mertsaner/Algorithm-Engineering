@@ -1,6 +1,7 @@
 #include "solver.h"
 #include <vector>
 #include <iostream>
+#include <tuple>
 
 
 
@@ -9,9 +10,58 @@ int main() {
 	//Edge test_edge(1,2,5);
 	//cout << test_edge.to_string() << endl;
 	Graph g = parse_input();
-	cout << g.to_string(TRIPLE) << endl;
+	cout << g.to_string() << endl;
+
+
 	return 0;
 }
+
+tuple<vector<Edge>,int> recursion_main(Graph graph){
+	int k = 0;
+
+	tuple<vector<Edge>,bool> result;
+
+	while (true) {
+		cout << "test with k= " << k << endl;
+		result = recursion(graph, k);
+		if (get<1>(result) == true) {
+			break;
+		}
+		k += 1;
+	
+	}
+	tuple<vector<Edge>,int> solution(get<0>(result),k);
+
+	return solution;
+}
+
+tuple<vector<Edge>,bool> recursion(Graph graph,int k){
+	if (k < 0) {
+		vector<Edge> subresult;
+		tuple<vector<Edge>, bool> result(subresult, false);
+		return result;
+	}
+
+	bool is_graph = cluster_detection(graph);
+	if(is_graph){
+		cout << endl;
+
+	}
+
+
+
+
+	tuple<vector<Edge>,bool> result;
+	return result;
+}
+
+bool cluster_detection(Graph graph){
+	return false;
+}
+
+
+
+
 
 Graph parse_input() {
 	string input_line;

@@ -13,6 +13,31 @@ Graph::Graph(int n,vector<vector<int>> list_of_edges) {
 	return;
 }
 
+Graph Graph::clone(){
+	Graph new_graph;
+	
+	new_graph.vertices = this->vertices;
+	vector<vector<Edge>> adjacent_matrix;
+	for(uint i = 0; i < (this->vertices).size(); i++){
+		vector<Edge> row;
+		for(uint j = 0; j < (this->vertices).size(); j++){
+			Vertex* vertex_new_1 = &(new_graph.vertices.at(i));
+			Vertex* vertex_new_2 = &(new_graph.vertices.at(j));
+			Edge new_edge(vertex_new_1 , vertex_new_2 , this->adjacent_matrix.at(i).at(j).weight);
+			new_edge.is_set = this->adjacent_matrix.at(i).at(j).is_set;
+			new_edge.is_set = this->adjacent_matrix.at(i).at(j).forbidden;
+			row.push_back(new_edge);
+			//new_graph.adjacent_matrix.at(i).at(j) = new_edge;
+			//new_graph.adjacent_matrix.at(j).at(i) = new_edge;			
+		}
+		adjacent_matrix.push_back(row);
+	}
+	new_graph.adjacent_matrix = adjacent_matrix;
+	return new_graph;
+
+
+}
+
 void Graph::build_adjacent_matrix(int vertex_count, vector<vector<int>> list_of_edges) {
 	vector<vector<Edge>> adjacent_matrix;
 	vector<Vertex> vertices;
@@ -40,14 +65,19 @@ void Graph::build_adjacent_matrix(int vertex_count, vector<vector<int>> list_of_
 		Vertex* saved_vertex_2 = &((this->vertices).at(list_of_edges.at(i).at(1) -1));
 		
 		Edge new_edge(saved_vertex_1, saved_vertex_2, list_of_edges.at(i).at(2));
+	
+		new_edge.is_set = (list_of_edges.at(i).at(2) > 0);
+	
 		adjacent_matrix.at(list_of_edges.at(i).at(0) -1).at(list_of_edges.at(i).at(1) -1) = new_edge;
 		adjacent_matrix.at(list_of_edges.at(i).at(1) -1).at(list_of_edges.at(i).at(0) -1) = new_edge;
 		
 		Edge self_edge(saved_vertex_0, saved_vertex_0, 0);
+		self_edge.is_set = true;
 		adjacent_matrix.at(list_of_edges.at(i).at(0) -1).at(list_of_edges.at(i).at(0) -1) = self_edge;
 	}
 	Vertex* saved_vertex_last = &((this->vertices).at((this->vertices).size() -1));
 	Edge self_edge_last(saved_vertex_last, saved_vertex_last, 0);
+	self_edge_last.is_set = true;
 	adjacent_matrix.at(vertex_count-1).at(vertex_count-1) = self_edge_last;
 
 	this->adjacent_matrix = adjacent_matrix;
