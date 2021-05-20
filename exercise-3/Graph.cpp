@@ -1,21 +1,8 @@
+#include "Graph.h"
 #include <vector>
-#include <Edge.h>
-#include <Vertex.h>
 
 using namespace std;
 
-class Graph{
-	public:
-		Graph(int n,vector<vector<int>> list_of_edges){
-
-
-		}
-		vector<Vertex> vertices; 
-		vector<Edge> edges;
-
-
-
-	private: 
-
-
+Graph::Graph(int n,vector<vector<int>> list_of_edges) {
+	return;
 }

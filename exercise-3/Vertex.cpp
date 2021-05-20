@@ -1,16 +1,10 @@
+#include "Vertex.h"
 #include <vector>
 
 using namespace std;
 
-class Vertex{
-	public:
-		Vertex(int vertex_number){
 
-		}
-
-		int vertex_number; 
-
-
-	private: 
-
+Vertex::Vertex(int vertex_number) {
+	int a = 2;
+	return;
 }
