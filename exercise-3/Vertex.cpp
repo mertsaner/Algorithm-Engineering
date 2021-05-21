@@ -14,6 +14,16 @@ Vertex::Vertex(int vertex_number) {
 	return;
 }
 
+string Vertex::to_string(int flag) {
+	if (flag == VERTEX_NORMAL) {
+		return "V" + std::to_string(this->vertex_number); 
+	}
+	if (flag == VERTEX_EXP) {
+		return "V" + std::to_string(this->vertex_number) + "(" + std::to_string(this->deg) + ")";
+	}
+	return this->to_string(VERTEX_NORMAL);
+}
+
 string Vertex::to_string() {
-	return "V" + std::to_string(this->vertex_number);
+	return this->to_string(VERTEX_NORMAL);
 }

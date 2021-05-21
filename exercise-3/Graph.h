@@ -26,7 +26,6 @@ class Graph{
 		int get_next_vertex_number();
 		vector<Vertex> vertices; 
 		vector<vector<Edge>> adjacent_matrix;
-
 		Graph clone();
 
 	private: 

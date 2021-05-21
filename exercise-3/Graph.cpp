@@ -46,6 +46,7 @@ void Graph::build_adjacent_matrix(int vertex_count, vector<vector<int>> list_of_
 		for (int j = 0; j < vertex_count; j++) {
 			if (i == j) {
 				Vertex new_vertex(i+1);
+				new_vertex.deg = 0;
 				(this->vertices).push_back(new_vertex);
 				Vertex* ref_vertex = &((this->vertices).at(i));
 				Edge new_edge(ref_vertex, ref_vertex, 0);
@@ -63,11 +64,15 @@ void Graph::build_adjacent_matrix(int vertex_count, vector<vector<int>> list_of_
 		Vertex* saved_vertex_0 = &((this->vertices).at(list_of_edges.at(i).at(0) -1));
 		Vertex* saved_vertex_1 = &((this->vertices).at(list_of_edges.at(i).at(0) -1));
 		Vertex* saved_vertex_2 = &((this->vertices).at(list_of_edges.at(i).at(1) -1));
-		
+
+
 		Edge new_edge(saved_vertex_1, saved_vertex_2, list_of_edges.at(i).at(2));
 	
-		new_edge.is_set = (list_of_edges.at(i).at(2) > 0);
-	
+		new_edge.is_set = (list_of_edges.at(i).at(2) > 0);	
+		
+		(*saved_vertex_1).deg += (new_edge.is_set) ? 1 : 0;
+		(*saved_vertex_2).deg += (new_edge.is_set) ? 1 : 0; 
+		
 		adjacent_matrix.at(list_of_edges.at(i).at(0) -1).at(list_of_edges.at(i).at(1) -1) = new_edge;
 		adjacent_matrix.at(list_of_edges.at(i).at(1) -1).at(list_of_edges.at(i).at(0) -1) = new_edge;
 		
@@ -81,7 +86,14 @@ void Graph::build_adjacent_matrix(int vertex_count, vector<vector<int>> list_of_
 	adjacent_matrix.at(vertex_count-1).at(vertex_count-1) = self_edge_last;
 
 	this->adjacent_matrix = adjacent_matrix;
+
+	// get connected components
 	return;
+}
+
+
+int ccsize(int vertex_number) {
+	return 0;
 }
 
 
@@ -97,6 +109,16 @@ void Graph::add_vertex(Vertex new_vertex) {
 }
 
 string Graph::to_string(int flag) {
+	if (flag != WEIGHT_ONLY && flag != TRIPLE) {
+		string result = "";
+		for (uint i = 0; i < this->vertices.size(); i++) {
+			result += this->vertices.at(i).to_string(VERTEX_EXP);
+			if (i < this->vertices.size() -1) {
+				result += " ";
+			}
+		}
+		return result;
+	}
 	string result = "";
 	for (uint i = 0; i < this->adjacent_matrix.size(); i++) {
 		for (uint j = 0; j < this->adjacent_matrix.at(i).size(); j++) {
@@ -109,6 +131,7 @@ string Graph::to_string(int flag) {
 	}
 	return result;
 }
+
 
 string Graph::to_string() {
 	return this->to_string(WEIGHT_ONLY);

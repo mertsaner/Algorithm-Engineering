@@ -42,9 +42,12 @@ tuple<vector<Edge>,bool> recursion(Graph graph,int k){
 		return result;
 	}
 
-	bool is_graph = cluster_detection(graph);
-	if(is_graph){
-		cout << endl;
+	
+	bool is_cluster = cluster_detection(graph);
+	if(is_cluster){
+		vector<Edge> edges;
+		tuple<vector<Edge>,bool> result(edges,true);
+		return result;
 	}
 
 	// -------------------- find p3 not clique in graph -------------------------
@@ -85,10 +88,34 @@ tuple<vector<Edge>,bool> recursion(Graph graph,int k){
 }
 
 bool cluster_detection(Graph graph){
-	return false;
+	for(uint i = 0; i < graph.adjacent_matrix.size(); i++){
+		vector<Edge> row = graph.adjacent_matrix.at(i);
+		for(uint j = 0; j < row.size();j++){
+			if(!row.at(j).is_set){
+				continue;
+			}
+			for(uint k = j+1;k < row.size(); k++){
+				if(!row.at(k).is_set){
+					continue;
+				}
+				if (!graph.adjacent_matrix.at(j).at(k).is_set) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 
 vector<uint> find_p3_not_clique(Graph graph) {
+	vector<int> v_deg;
+	vector<int> cc_size;
+	for (uint i = 0; i < graph.vertices.size(); i++) {
+		vector<Edge> row = graph.adjacent_matrix.at(i);
+		break;
+	}
+
+
 	return {};
 }
 
