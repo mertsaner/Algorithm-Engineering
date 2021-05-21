@@ -21,3 +21,7 @@ vector<uint> find_p3_not_clique(Graph graph);
 tuple<vector<Edge>,int> recursion_main(Graph graph);
 
 tuple<vector<Edge>,bool> recursion(Graph graph,int k);
+
+int connected_component_size(int vertex, Graph graph, int* seen_vertexes);
+
+vector<uint> get_p3_with_bfs(int vertex, Graph graph);
