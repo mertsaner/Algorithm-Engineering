@@ -45,13 +45,42 @@ tuple<vector<Edge>,bool> recursion(Graph graph,int k){
 	bool is_graph = cluster_detection(graph);
 	if(is_graph){
 		cout << endl;
-
 	}
 
+	// -------------------- find p3 not clique in graph -------------------------
+	
+
+	// ------------- recursive call with first edge changed ---------------------
+	//	-> clone actual graph
+	Graph sub_graph_1 = graph.clone();
+	//	-> change the edge if not forbidden (is_set = !is_set)
+	//	-> make recursive call with decreased budget
+	//	-> check result and if this branch is a solution
+	//		-> add the changed edge to the result
+	//		-> return the result
+
+	// ------------- recursive call with second edge changed -------------------
+	//	-> clone actual graph
+	Graph sub_graph_2 = graph.clone();
+	//	-> change the edge if not forbidden (is_set = !is_set)
+	//	-> make recursive call with decreased budget
+	//	-> check result and if this branch is a solution
+	//		-> add the changed edge to the result
+	//		-> return the result
+
+	// ------------- recursive call with third edge changed --------------------
+	//	-> clone actual graph
+	Graph sub_graph_3 = graph.clone();
+	//	-> change the edge if not forbidden (is_set = !is_set)
+	//	-> make recursive call with decreased budget
+	//	-> check result and if this branch is a solution
+	//		-> add the changed edge to the result
+	//		-> return the result
 
 
 
-	tuple<vector<Edge>,bool> result;
+	vector<Edge> empty_subresult;
+	tuple<vector<Edge>,bool> result(empty_subresult, false);
 	return result;
 }
 
@@ -59,7 +88,9 @@ bool cluster_detection(Graph graph){
 	return false;
 }
 
-
+vector<uint> find_p3_not_clique(Graph graph) {
+	return {};
+}
 
 
 
@@ -86,7 +117,6 @@ Graph parse_input() {
 	Graph graph(vertex_count, adjacent_lines);
 	return graph;
 }
-
 
 int parse_input_vertex_count(string input_line) {
 	if (input_line.empty()) {

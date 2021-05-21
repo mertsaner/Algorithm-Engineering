@@ -16,6 +16,8 @@ vector<int> parse_input_adjacents(string input_line);
 
 bool cluster_detection(Graph graph);
 
+vector<uint> find_p3_not_clique(Graph graph);
+
 tuple<vector<Edge>,int> recursion_main(Graph graph);
 
 tuple<vector<Edge>,bool> recursion(Graph graph,int k);
