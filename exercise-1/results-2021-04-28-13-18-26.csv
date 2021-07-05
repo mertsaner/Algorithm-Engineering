@@ -1,0 +1,12 @@
+file;vertices;edges;time;solsize;recsteps;finished;verified
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w001.dimacs;4;3;0.00;0;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w003.dimacs;6;8;0.03;21;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w005.dimacs;16;118;0.15;4;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w007.dimacs;16;107;0.04;7;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w009.dimacs;13;77;0.04;8;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w011.dimacs;14;88;0.24;10;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w013.dimacs;15;48;0.95;14;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w015.dimacs;10;14;0.04;16;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w017.dimacs;14;60;0.16;20;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w019.dimacs;16;112;3.38;22;;1;correct;
+/home/maximilian/Dokumente/uni/ss21/AlgEng/Algorithm-Engineering/exercise-1/2-real-world/w021.dimacs;11;22;1.51;24;;1;correct;

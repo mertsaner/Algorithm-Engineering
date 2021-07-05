@@ -45,28 +45,36 @@ int main(int argc, char **argv) {
 		}
 	}
 	
-	cout << vertex_count << endl;
-	cout << adjacent_lines.size() << endl;
-	cout << "Building Adjacent-Matrix" << endl;
+	//cout << vertex_count << endl;
+	//cout << adjacent_lines.size() << endl;
+	//cout << "Building Adjacent-Matrix" << endl;
 	vector<vector<int>> adjacent_matrix = build_adjacent_matrix(vertex_count, adjacent_lines);
-	for (int x = 0; x < vertex_count; x++) {
-		for (int y = 0; y < vertex_count; y++) {
-			cout << adjacent_matrix.at(x).at(y) << " ";
-		}
-		cout << endl;
-	}
-	cout << "--------------" << endl;
+	//for (int x = 0; x < vertex_count; x++) {
+	//	for (int y = 0; y < vertex_count; y++) {
+	//		cout << adjacent_matrix.at(x).at(y) << " ";
+	//	}
+	//	cout << endl;
+	//}
+	//cout << "--------------" << endl;
 	tuple<vector<vector<int>>,int> result = recursive_aproach_main(adjacent_matrix);
 	//tuple<vector<vector<int>>,int> result = naive_aproach_main(adjacent_matrix, vertex_count);
 	
 	print_2D_vector(translate_indices(get<0>(result)));
-	cout << "cost: " << get<1>(result) << endl;
+	//cout << "cost: " << get<1>(result) << endl;
 	return 0;
 }
 
 tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjacent_matrix) {
+	vector<int> edge_weights;
+	for (unsigned int i = 0; i < adjacent_matrix.size(); i++) {
+		for (unsigned int j = i + 1; j < adjacent_matrix.at(i).size(); j++) {
+			edge_weights.push_back(abs(adjacent_matrix.at(i).at(j)));
+		}
+	}
+	sort(edge_weights.begin(), edge_weights.end());
+
 	tuple<vector<vector<int>>, bool> result;
-	int k = 0;
+	/*int k = 0;
 	while (true) {
 		cout << "test with k= " << k << endl;
 		result = recursive_approach(adjacent_matrix, k);
@@ -74,9 +82,21 @@ tuple<vector<vector<int>>,int> recursive_aproach_main(vector<vector<int>> adjace
 			break;
 		}
 		k += 1;
-	}
+	}*/
 
-	cout << "result k: " << k << endl;
+	int k = 0;
+	int l = 0;
+	while (true) {
+		//cout << "test with k= " << k << endl;
+		result = recursive_approach(adjacent_matrix, k);
+		if (get<1>(result) == true) {
+			break;
+		}
+		k += edge_weights.at(0);
+		//k += 1;
+		//l += 1;
+	}
+	//cout << "result k: " << k << endl;
 	vector<vector<int>> v = get<0>(result);
 	/*for (unsigned int i = 0; i < v.size(); i++) {
 		for (unsigned int j = 0; j < v.at(i).size(); j++) {
@@ -185,7 +205,7 @@ vector<vector<int>> build_adjacent_matrix(int vertex_count, vector<vector<int>> 
 		}
 		adjacent_matrix.push_back(row);
 	}
-	cout << adjacent_matrix.at(0).size() << endl;
+	//cout << adjacent_matrix.at(0).size() << endl;
 	for (unsigned int i = 0; i < edges.size(); i++) {
 		adjacent_matrix.at(edges.at(i).at(0)-1).at(edges.at(i).at(1)-1) = edges.at(i).at(2);
 	}
