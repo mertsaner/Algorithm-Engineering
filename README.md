@@ -1,2 +1,2 @@
 # Algorithm-Engineering
-Algorithm Engineering for hard problems and their implementation using C++ and opmization packages like CPLEX
+Algorithm Engineering for hard problems and their implementation using C++ and opmization tools
