@@ -1,2 +1,2 @@
 # Algorithm-Engineering
-Algorithm Engineering for hard problems and their implementation using C++ and opmization tools
+Algorithm Engineering lecture programming projects for hard problems and their implementation using C++ and opmization tools
