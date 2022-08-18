@@ -6,5 +6,4 @@ Algorithm Engineering lecture programming projects for hard problems and their i
 
 Markup :  [Named Link]([http://www.google.fr/](https://github.com/mertsaner/AlgorithmEngineering_v2.0) "Named link title") and http://www.google.fr/ or <http://example.com/>
 
-
-Markup :  [Named Link](https://github.com/mertsaner/AlgorithmEngineering_v2.0 "Named link title") and http://www.google.fr/ or <http://example.com/>
+[Named Link](https://github.com/mertsaner/AlgorithmEngineering_v2.0 "Named link title")
