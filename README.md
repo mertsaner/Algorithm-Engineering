@@ -24,4 +24,7 @@ In order to implement our program, we used some C++ libraries. Those are math.h 
 ## Experiments 
 - While implementing our project we created adjacent matrices and counted for a number of vertices and clusters. We also calculated the cost of each such change. We answered one of the important questions of how does the running time depend on the number of vertices of the input graph, the answer is,  for 10 vertices, we need to test $ 2^((((vertexcount - 1)^2)(vertexcount-1)) / 2)$ computations. For normal computers, it would be too time-consuming to calculate. 
 - We also answered the second important question of how does the running time depends on the minimum cost to obtain a cluster graph.
-With the naive approach, there is no dependence, with the recursive approach, the running time increases with the cost.  With each cost, we need to build a new recursive tree with one additional layer, while it depends on the cost of the vertex change. 
+With the naive approach, there is no dependence, with the recursive approach, the running time increases with the cost.  With each cost, we need to build a new recursive tree with one additional layer, while it depends on the cost of the vertex change.
+
+<img width="3000" height="2100" alt="image" src="https://github.com/user-attachments/assets/043da7a7-26a0-4a08-8be2-a8ff0a5d6542" />
+
